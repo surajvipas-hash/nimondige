@@ -1,0 +1,9 @@
+body {
+  background-color: #f5f6fa;
+}
+.nav-link {
+  cursor: pointer;
+}
+.card {
+  border-radius: 8px;
+}
