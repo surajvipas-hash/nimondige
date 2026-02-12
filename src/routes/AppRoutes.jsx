@@ -1,11 +1,12 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Login from "../pages/login";
+import Login from "../pages/Login";
 import Dashboard from "../pages/Dashboard";
 import Accounts from "../pages/Accounts";
 import CustomerSummary from "../pages/CustomerSummary";
 import ReceiptDetails from "../pages/ReceiptDetails";
 import DeviceSummary from "../pages/DeviceSummary";
 import Profile from "../pages/Profile";
+import NotFound from "../pages/NotFound";
 import Layout from "../components/Layout";
 import { useAuth } from "../context/AuthContext";
 
@@ -84,6 +85,9 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+      {/* 404 Route */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

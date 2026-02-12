@@ -18,24 +18,47 @@ export default function Login() {
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center vh-100">
-      <div className="card p-4" style={{ width: "350px" }}>
-        <h4 className="mb-3">PigmyLite Agent Login</h4>
-        <input
-          className="form-control mb-3"
-          placeholder="Usercode"
-          onChange={(e) => setUsercode(e.target.value)}
-        />
-        <input
-          type="password"
-          className="form-control mb-3"
-          placeholder="Password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {error && <p className="text-danger">{error}</p>}
-        <button className="btn btn-primary w-100" onClick={handleLogin}>
+    <div className="login-wrapper d-flex align-items-center justify-content-center">
+      <div className="login-card shadow-lg">
+        <div className="text-center mb-4">
+          <h3 className="fw-bold text-primary">PigmyLite</h3>
+          <p className="text-muted mb-0">Agent Portal</p>
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">User Code</label>
+          <input
+            type="text"
+            className="form-control modern-input"
+            placeholder="Enter user code"
+            value={usercode}
+            onChange={(e) => setUsercode(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Password</label>
+          <input
+            type="password"
+            className="form-control modern-input"
+            placeholder="Enter password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+
+        {error && <div className="alert alert-danger py-2">{error}</div>}
+
+        <button
+          className="btn btn-primary w-100 modern-btn"
+          onClick={handleLogin}
+        >
           Login
         </button>
+
+        <div className="text-center mt-3 small text-muted">
+          © 2026 PigmyLite Banking System
+        </div>
       </div>
     </div>
   );
