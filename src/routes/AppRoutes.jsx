@@ -1,93 +1,94 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Login from "../pages/login";
-import Dashboard from "../pages/Dashboard";
-import Accounts from "../pages/Accounts";
-import CustomerSummary from "../pages/CustomerSummary";
-import ReceiptDetails from "../pages/ReceiptDetails";
-import DeviceSummary from "../pages/DeviceSummary";
-import Profile from "../pages/Profile";
-import NotFound from "../pages/NotFound";
-import Layout from "../components/Layout";
 import { useAuth } from "../context/AuthContext";
 
-function ProtectedRoute({ children }) {
+/* ========== PAGES ========== */
+import Login from "../pages/Login";
+
+/* ========== AGENT ========== */
+import Layout from "../components/Layout";
+import Dashboard from "../pages/Dashboard";
+import Accounts from "../pages/Accounts";
+
+/* ========== COMPANY ========== */
+import CompanyLayout from "../components/CompanyLayout";
+import CompanyDashboard from "../pages/company/CompanyDashboard";
+import AgentsList from "../pages/company/AgentsList";
+import EditAgent from "../pages/company/EditAgent";
+import ActiveAccounts from "../pages/company/ActiveAccounts";
+import Reports from "../pages/company/Reports";
+import CompanyProfile from "../pages/company/CompanyProfile";
+
+/* NEW PAGES */
+import AgentAccounts from "../pages/company/AgentAccounts";
+import CustomerSummary from "../pages/company/CustomerSummary";
+
+/* ================= PROTECTED ROUTE ================= */
+function ProtectedRoute({ children, role }) {
   const { user } = useAuth();
-  return user ? children : <Navigate to="/" />;
+
+  if (!user) return <Navigate to="/" />;
+
+  if (role && user.role !== role) return <Navigate to="/" />;
+
+  return children;
 }
 
+/* ================= ROUTES ================= */
 export default function AppRoutes() {
   return (
     <Routes>
+
+      {/* LOGIN */}
       <Route path="/" element={<Login />} />
 
+      {/* ================= AGENT ROUTES ================= */}
       <Route
-        path="/dashboard"
+        path="/agent"
         element={
-          <ProtectedRoute>
-            <Layout>
-              <Dashboard />
-            </Layout>
+          <ProtectedRoute role="agent">
+            <Layout />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="accounts" element={<Accounts />} />
+      </Route>
 
+      {/* ================= COMPANY ROUTES ================= */}
       <Route
-        path="/accounts"
+        path="/company"
         element={
-          <ProtectedRoute>
-            <Layout>
-              <Accounts />
-            </Layout>
+          <ProtectedRoute role="company">
+            <CompanyLayout />
           </ProtectedRoute>
         }
-      />
+      >
+        {/* Dashboard */}
+        <Route path="dashboard" element={<CompanyDashboard />} />
 
-      <Route
-        path="/customer"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <CustomerSummary />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
+        {/* Agents */}
+        <Route path="agents" element={<AgentsList />} />
+        <Route path="edit-agent/:id" element={<EditAgent />} />
 
-      <Route
-        path="/receipts"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <ReceiptDetails />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
+        {/* Accounts */}
+        <Route path="accounts" element={<ActiveAccounts />} />
 
-      <Route
-        path="/device"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <DeviceSummary />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
+        {/* NEW: Agent Accounts Page */}
+        <Route path="agent-accounts" element={<AgentAccounts />} />
 
-      <Route
-        path="/profile"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Profile />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
+        {/* NEW: Customer Summary Page */}
+        <Route path="customer-summary" element={<CustomerSummary />} />
 
-      {/* 404 Route */}
-      <Route path="*" element={<NotFound />} />
+        {/* Reports */}
+        <Route path="reports" element={<Reports />} />
+
+        {/* Profile */}
+        <Route path="profile" element={<CompanyProfile />} />
+      </Route>
+
+      {/* DEFAULT FALLBACK */}
+      <Route path="*" element={<Navigate to="/" />} />
+
     </Routes>
   );
 }
